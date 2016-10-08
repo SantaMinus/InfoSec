@@ -1,0 +1,20 @@
+user signed in at Sat Mar 22 20:09:05 EET 2014
+user created a file myFile.txt at Sat Mar 22 20:09:05 EET 2014
+user changed myFile.txt file content at Sat Mar 22 20:09:05 EET 2014
+user deleted a file myFile.txt at Sat Mar 22 20:09:05 EET 2014
+user signed out at Sat Mar 22 20:09:05 EET 2014
+An attempt of unauthorised access at Sat Oct 25 14:47:49 EEST 2014
+sava signed in at Sat Oct 08 23:47:44 EEST 2016
+sava created a file  at Sat Oct 08 23:47:44 EEST 2016
+sava changed  file content at Sat Oct 08 23:47:44 EEST 2016
+sava created a file 1.txt at Sat Oct 08 23:47:44 EEST 2016
+sava signed out at Sat Oct 08 23:47:44 EEST 2016
+sava signed in at Sat Oct 08 23:50:20 EEST 2016
+sava created a file sds.txt at Sat Oct 08 23:50:20 EEST 2016
+sava deleted a file sds.txt at Sat Oct 08 23:50:20 EEST 2016
+sava deleted a file sds.txt at Sat Oct 08 23:50:20 EEST 2016
+sava deleted a file sds.txt at Sat Oct 08 23:50:20 EEST 2016
+sava created a file sds.txt at Sat Oct 08 23:50:20 EEST 2016
+sava deleted a file sds.txt at Sat Oct 08 23:50:20 EEST 2016
+sava created a file sds.jpg at Sat Oct 08 23:50:20 EEST 2016
+sava signed out at Sat Oct 08 23:50:20 EEST 2016
