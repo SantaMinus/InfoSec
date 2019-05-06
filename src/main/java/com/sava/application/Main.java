@@ -1,7 +1,7 @@
 package com.sava.application;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import com.sava.ui.GUI;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.Random;
 import java.util.Scanner;
 
 import javax.swing.JButton;
@@ -20,11 +21,11 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class Main extends JFrame {
-    static String ulogin;
-    String password;
-    private static File FILE = new File("access.xml");
-    static Date date = new Date();
-    private static File LOGFILE = new File("log.txt");
+    public static String ulogin;
+    private static final File FILE = new File("access.xml");
+    public static final Date DATE = new Date();
+    private static final File LOGFILE = new File("log.txt");
+    private static final Random randomizer = new Random();
 
     public static void main(String[] args) {
         signIn();
@@ -48,8 +49,8 @@ public class Main extends JFrame {
         login.add(name);
         login.add(new JLabel("Password:"));
         login.add(pass);
-        final int c1 = (int) (Math.random() * 10);
-        final int c2 = (int) (Math.random() * 10);
+        final int c1 = (randomizer.nextInt() * 10);
+        final int c2 = (randomizer.nextInt() * 10);
         login.add(new JLabel("Captcha:    " + c1 + "+" + c2));
         login.add(captcha);
 
@@ -61,62 +62,58 @@ public class Main extends JFrame {
         m.setResizable(false);
         m.setVisible(true);
 
-        ok.addActionListener(new ActionListener() {
-            @SuppressWarnings("deprecation")
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                ulogin = name.getText();
-                int capt = Integer.parseInt(captcha.getText());
-                String[] arr;
-                boolean access = false;
+        ok.addActionListener(arg0 -> {
+            ulogin = name.getText();
+            int capt = Integer.parseInt(captcha.getText());
+            String[] arr;
+            boolean access = false;
 
-                Scanner scanner = null;
+            Scanner scanner = null;
+            try {
+                scanner = new Scanner(FILE);
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+            String s;
+
+            while (scanner.hasNext()) {
+                s = scanner.nextLine();
+                arr = s.split(" ");
+
+                if (ulogin.equals(arr[0]) && pass.getText().equals(arr[1]) && capt == c1 + c2) {
+                    File directory = new File("C:/root/" + ulogin);
+                    access = true;
+                    if (!directory.exists())
+                        directory.mkdir();
+                    try {
+                        Runtime.getRuntime().exec("attrib +H " + "C:/root/" + ulogin);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        writeLog(ulogin + " signed in at " + DATE.toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    m.dispose();
+                    GUI.paint();
+                }
+            }
+            if (!access) {
+                scanner.close();
+                JOptionPane.showMessageDialog(GUI.frame, "Authentication failed", "ERROR", JOptionPane.ERROR_MESSAGE);
                 try {
-                    scanner = new Scanner(FILE);
-                } catch (FileNotFoundException e1) {
+                    writeLog("An attempt of unauthorised access at " + DATE.toString());
+                } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-                String s = null;
-
-                while (scanner.hasNext()) {
-                    s = scanner.nextLine();
-                    arr = s.split(" ");
-
-                    if (ulogin.equals(arr[0]) && pass.getText().equals(arr[1]) && capt == c1 + c2) {
-                        File directory = new File("C:/root/" + ulogin);
-                        access = true;
-                        if (!directory.exists())
-                            directory.mkdir();
-                        try {
-                            Runtime.getRuntime().exec("attrib +H " + "C:/root/" + ulogin);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            writeLog(ulogin + " signed in at " + date.toString());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        m.dispose();
-                        GUI.paint();
-                    }
-                }
-                if (!access) {
-                    scanner.close();
-                    JOptionPane.showMessageDialog(GUI.frame, "Authentication failed", "ERROR", JOptionPane.ERROR_MESSAGE);
-                    try {
-                        writeLog("An attempt of unauthorised access at " + date.toString());
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                    System.exit(0);
-                }
-                scanner.close();
+                System.exit(0);
             }
+            scanner.close();
         });
     }
 
-    static void writeLog(String s) throws IOException {
+    public static void writeLog(String s) throws IOException {
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(new BufferedWriter(new FileWriter(LOGFILE, true)));
