@@ -1,4 +1,4 @@
-package com.sava;
+package com.sava.application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,15 +22,15 @@ import javax.swing.JTextField;
 public class Main extends JFrame {
     static String ulogin;
     String password;
-    static File file = new File("access.xml");
+    private static File FILE = new File("access.xml");
     static Date date = new Date();
-    static File logfile = new File("log.txt");
+    private static File LOGFILE = new File("log.txt");
 
     public static void main(String[] args) {
         signIn();
     }
 
-    public static void signIn() {
+    private static void signIn() {
         final Main m = new Main();
         final JPanel login = new JPanel();
 
@@ -72,7 +72,7 @@ public class Main extends JFrame {
 
                 Scanner scanner = null;
                 try {
-                    scanner = new Scanner(file);
+                    scanner = new Scanner(FILE);
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
                 }
@@ -116,10 +116,10 @@ public class Main extends JFrame {
         });
     }
 
-    public static void writeLog(String s) throws IOException {
+    static void writeLog(String s) throws IOException {
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(new BufferedWriter(new FileWriter(logfile, true)));
+            writer = new PrintWriter(new BufferedWriter(new FileWriter(LOGFILE, true)));
         } catch (IOException e) {
             e.printStackTrace();
         }

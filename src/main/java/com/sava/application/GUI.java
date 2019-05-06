@@ -1,4 +1,4 @@
-package com.sava;
+package com.sava.application;
 
 import java.awt.Container;
 import java.awt.GridLayout;
@@ -27,6 +27,11 @@ public class GUI {
     static JLabel sep0 = new JLabel("Enter your file name:");
     static JLabel sep2 = new JLabel("File content:");
     static JFrame frame = new JFrame("def1");
+    private static final String ROOT_DIR = "../root";
+
+    private GUI() {
+        // intentionally left blank
+    }
 
     static void paint() {
         //frame
@@ -59,7 +64,7 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 filename = fname.getText();
-                file = new File("C:/root/" + Main.ulogin + "/" + filename);
+                file = new File(ROOT_DIR + Main.ulogin + "/" + filename);
                 try {
                     file.createNewFile();
                 } catch (IOException e) {
@@ -79,7 +84,7 @@ public class GUI {
             public void actionPerformed(ActionEvent arg0) {
                 if (file == null) {
                     filename = fname.getText();
-                    file = new File("C:/root/" + Main.ulogin + "/" + filename);
+                    file = new File(ROOT_DIR + Main.ulogin + "/" + filename);
                 }
                 content.setText("");
                 if (file.exists()) {
@@ -109,7 +114,7 @@ public class GUI {
             public void actionPerformed(ActionEvent arg0) {
                 if (file == null) {
                     filename = fname.getText();
-                    file = new File("C:/root/" + Main.ulogin + "/" + filename);
+                    file = new File(ROOT_DIR + Main.ulogin + "/" + filename);
                 }
                 if (file.exists()) file.delete();
             }
