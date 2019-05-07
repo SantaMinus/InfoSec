@@ -1,6 +1,8 @@
 package com.sava.ui;
 
 import com.sava.application.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.Container;
 import java.awt.GridLayout;
@@ -28,6 +30,9 @@ public class GUI {
     private static final JLabel FILE_CONTENT_LABEL = new JLabel("File content:");
     public static JFrame frame = new JFrame("def1");
     private static final String ROOT_DIR = "../root";
+    private static final String FILE_NOT_FOUND_ERROR = "File not found";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     private GUI() {
         // intentionally left blank
@@ -66,13 +71,9 @@ public class GUI {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error("Failed to create a new file {}", filename, e);
             }
-            try {
-                Main.writeLog(Main.ulogin + " created a file " + filename + " at " + Main.DATE.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            LOGGER.debug("{} created a file {}", Main.ulogin, filename);
         });
 
         //EDIT listener
@@ -88,18 +89,14 @@ public class GUI {
                 try {
                     scanner = new Scanner(file);
                 } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                    LOGGER.error(FILE_NOT_FOUND_ERROR, e);
                 }
                 String s = null;
                 if (scanner.hasNext()) s = scanner.nextLine();
                 scanner.close();
                 if (s != null) content.setText(content.getText() + s);
             }
-            try {
-                Main.writeLog(Main.ulogin + " changed " + filename + " file content at " + Main.DATE.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            LOGGER.debug("{} changed {} file content", Main.ulogin, filename);
         });
 
         //DELETE listener
@@ -118,7 +115,7 @@ public class GUI {
                 try {
                     writer = new PrintWriter(file);
                 } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
+                    LOGGER.error(FILE_NOT_FOUND_ERROR, e1);
                 }
 
                 writer.print("");
@@ -126,20 +123,12 @@ public class GUI {
 
                 writer.close();
             }
-            try {
-                Main.writeLog(Main.ulogin + " deleted a file " + filename + " at " + Main.DATE.toString());
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+            LOGGER.debug("{} deleted a file {}", Main.ulogin, filename);
         });
 
         //EXIT listener
         exit.addActionListener(arg0 -> {
-            try {
-                Main.writeLog(Main.ulogin + " signed out at " + Main.DATE.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            LOGGER.debug("{} signed out", Main.ulogin);
             System.exit(0);
         });
     }

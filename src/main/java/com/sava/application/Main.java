@@ -1,14 +1,12 @@
 package com.sava.application;
 
 import com.sava.ui.GUI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -23,9 +21,10 @@ import javax.swing.JTextField;
 public class Main extends JFrame {
     public static String ulogin;
     private static final File FILE = new File("access.xml");
-    public static final Date DATE = new Date();
-    private static final File LOGFILE = new File("log.txt");
     private static final Random randomizer = new Random();
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    private static final String FILE_NOT_FOUND_ERROR = "File not found";
 
     public static void main(String[] args) {
         signIn();
@@ -71,8 +70,8 @@ public class Main extends JFrame {
             Scanner scanner = null;
             try {
                 scanner = new Scanner(FILE);
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
+            } catch (FileNotFoundException e) {
+                LOGGER.error(FILE_NOT_FOUND_ERROR, e);
             }
             String s;
 
@@ -88,39 +87,21 @@ public class Main extends JFrame {
                     try {
                         Runtime.getRuntime().exec("attrib +H " + "C:/root/" + ulogin);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        LOGGER.error("Failed to execute a command", e);
                     }
-                    try {
-                        writeLog(ulogin + " signed in at " + DATE.toString());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    LOGGER.debug("{} signed in", ulogin);
                     m.dispose();
                     GUI.paint();
                 }
             }
             if (!access) {
                 scanner.close();
-                JOptionPane.showMessageDialog(GUI.frame, "Authentication failed", "ERROR", JOptionPane.ERROR_MESSAGE);
-                try {
-                    writeLog("An attempt of unauthorised access at " + DATE.toString());
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+                JOptionPane.showMessageDialog(GUI.frame, "Authentication failed", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+                LOGGER.debug("An attempt of unauthorised access");
                 System.exit(0);
             }
             scanner.close();
         });
-    }
-
-    public static void writeLog(String s) throws IOException {
-        PrintWriter writer = null;
-        try {
-            writer = new PrintWriter(new BufferedWriter(new FileWriter(LOGFILE, true)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        writer.println(s);
-        writer.close();
     }
 }
