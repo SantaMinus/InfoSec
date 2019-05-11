@@ -27,6 +27,7 @@ public class Main extends JFrame {
     private static final String FILE_NOT_FOUND_ERROR = "File not found";
 
     public static void main(String[] args) {
+        LOGGER.debug("App started");
         signIn();
     }
 

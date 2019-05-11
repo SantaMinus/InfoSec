@@ -1,3 +1,5 @@
+version = '0.0.1-SNAPSHOT'
+
 buildscript {
     repositories {
         mavenCentral()
@@ -9,10 +11,11 @@ plugins {
     id 'groovy'
 }
 
+apply plugin: 'idea'
+apply plugin: 'groovy'
 apply plugin: 'java'
-apply plugin: 'eclipse'
 
-version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -23,12 +26,11 @@ dependencies {
     compile group: 'org.glassfish.jersey.core', name: 'jersey-common', version: '2.27'
     compile group: 'com.google.firebase', name: 'firebase-admin', version: '6.6.0'
     compile group: 'org.apache.maven.plugins', name: 'maven-jar-plugin', version: '3.1.1'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.2'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.2'
-}
 
-wrapper {
-    gradleVersion = '5.4.1'
+    //add Logback
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile 'ch.qos.logback:logback-core:1.2.3'
+    compile 'org.slf4j:slf4j-api:1.7.25'
 }
 
 jar {
