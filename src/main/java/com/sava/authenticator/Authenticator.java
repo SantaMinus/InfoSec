@@ -37,7 +37,7 @@ public class Authenticator {
                 if (!directory.exists())
                     directory.mkdir();
                 try {
-                    Runtime.getRuntime().exec("attrib +H " + "C:/root/" + login);
+                    Runtime.getRuntime().exec("attrib +H " + "F:/root/" + login);
                 } catch (IOException e) {
                     LOGGER.error("Failed to execute a command", e);
                 }
