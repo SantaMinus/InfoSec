@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class GUI {
-    private static JMenuBar menu = new JMenuBar();
+    private JMenuBar menuBar = new JMenuBar();
     private static String filename = "";
     private static File file;
     private static JTextArea fname = new JTextArea();
@@ -34,17 +34,16 @@ public class GUI {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    private GUI() {
+    public GUI() {
         // intentionally left blank
     }
 
-    public static void paint() {
+    public void paint(String ulogin) {
         //frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //menu
+        //menuBar
         JMenu fmenu = new JMenu("File");
-        menu.add(fmenu);
         JMenuItem add = new JMenuItem("Create file");
         JMenuItem edit = new JMenuItem("Edit");
         JMenuItem delete = new JMenuItem("Delete");
@@ -53,9 +52,10 @@ public class GUI {
         fmenu.add(edit);
         fmenu.add(delete);
         fmenu.add(exit);
+        menuBar.add(fmenu);
 
         JMenuItem button = new JMenuItem("Confirm");
-        menu.add(button);
+        menuBar.add(button);
 
         //adding components
         addComps(frame);
@@ -67,20 +67,20 @@ public class GUI {
         //ADD listener
         add.addActionListener(arg0 -> {
             filename = fname.getText();
-            file = new File(ROOT_DIR + Main.ulogin + "/" + filename);
+            file = new File(ROOT_DIR + ulogin + "/" + filename);
             try {
                 file.createNewFile();
             } catch (IOException e) {
                 LOGGER.error("Failed to create a new file {}", filename, e);
             }
-            LOGGER.debug("{} created a file {}", Main.ulogin, filename);
+            LOGGER.debug("{} created a file {}", ulogin, filename);
         });
 
         //EDIT listener
         edit.addActionListener(arg0 -> {
             if (file == null) {
                 filename = fname.getText();
-                file = new File(ROOT_DIR + Main.ulogin + "/" + filename);
+                file = new File(ROOT_DIR + ulogin + "/" + filename);
             }
             content.setText("");
             if (file.exists()) {
@@ -96,14 +96,14 @@ public class GUI {
                 scanner.close();
                 if (s != null) content.setText(content.getText() + s);
             }
-            LOGGER.debug("{} changed {} file content", Main.ulogin, filename);
+            LOGGER.debug("{} changed {} file content", ulogin, filename);
         });
 
         //DELETE listener
         delete.addActionListener(arg0 -> {
             if (file == null) {
                 filename = fname.getText();
-                file = new File(ROOT_DIR + Main.ulogin + "/" + filename);
+                file = new File(ROOT_DIR + ulogin + "/" + filename);
             }
             if (file.exists()) file.delete();
         });
@@ -123,24 +123,24 @@ public class GUI {
 
                 writer.close();
             }
-            LOGGER.debug("{} deleted a file {}", Main.ulogin, filename);
+            LOGGER.debug("{} deleted a file {}", ulogin, filename);
         });
 
         //EXIT listener
         exit.addActionListener(arg0 -> {
-            LOGGER.debug("{} signed out", Main.ulogin);
+            LOGGER.debug("{} signed out", ulogin);
             System.exit(0);
         });
     }
 
-    private static void addComps(final Container pane) {
+    private void addComps(final Container pane) {
         final JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0, 1));
         JPanel controls = new JPanel();
         controls.setLayout(new GridLayout(2, 2));
 
         //Add buttons to experiment with Grid Layout
-        panel.add(menu);
+        panel.add(menuBar);
         panel.add(ENTER_FILE_NAME_LABEL);
         panel.add(fname);
         panel.add(FILE_CONTENT_LABEL);
