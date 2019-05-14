@@ -19,7 +19,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class GUI {
+class GUI {
     private JMenuBar menuBar = new JMenuBar();
     private static String filename = "";
     private static File file;
@@ -37,7 +37,7 @@ public class GUI {
         // intentionally left blank
     }
 
-    public void paint(String ulogin) {
+    public void paint(String login) {
         //frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -66,20 +66,20 @@ public class GUI {
         //ADD listener
         add.addActionListener(arg0 -> {
             filename = fname.getText();
-            file = new File(ROOT_DIR + ulogin + "/" + filename);
+            file = new File(ROOT_DIR + login + "/" + filename);
             try {
                 file.createNewFile();
             } catch (IOException e) {
                 LOGGER.error("Failed to create a new file {}", filename, e);
             }
-            LOGGER.debug("{} created a file {}", ulogin, filename);
+            LOGGER.debug("{} created a file {}", login, filename);
         });
 
         //EDIT listener
         edit.addActionListener(arg0 -> {
             if (file == null) {
                 filename = fname.getText();
-                file = new File(ROOT_DIR + ulogin + "/" + filename);
+                file = new File(ROOT_DIR + login + "/" + filename);
             }
             content.setText("");
             if (file.exists()) {
@@ -95,14 +95,14 @@ public class GUI {
                 scanner.close();
                 if (s != null) content.setText(content.getText() + s);
             }
-            LOGGER.debug("{} changed {} file content", ulogin, filename);
+            LOGGER.debug("{} changed {} file content", login, filename);
         });
 
         //DELETE listener
         delete.addActionListener(arg0 -> {
             if (file == null) {
                 filename = fname.getText();
-                file = new File(ROOT_DIR + ulogin + "/" + filename);
+                file = new File(ROOT_DIR + login + "/" + filename);
             }
             if (file.exists()) file.delete();
         });
@@ -122,12 +122,12 @@ public class GUI {
 
                 writer.close();
             }
-            LOGGER.debug("{} deleted a file {}", ulogin, filename);
+            LOGGER.debug("{} deleted a file {}", login, filename);
         });
 
         //EXIT listener
         exit.addActionListener(arg0 -> {
-            LOGGER.debug("{} signed out", ulogin);
+            LOGGER.debug("{} signed out", login);
             System.exit(0);
         });
     }
