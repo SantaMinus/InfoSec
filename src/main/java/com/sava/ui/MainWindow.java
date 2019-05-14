@@ -7,10 +7,11 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.util.Random;
 
-public class MainWindow extends JFrame {
+public class MainWindow {
     private static final Random randomizer = new Random();
     private static final Logger LOGGER = LoggerFactory.getLogger(MainWindow.class);
     private Authenticator authenticator = new Authenticator();
+    private JFrame frame = new JFrame();
 
     public void signIn() {
         final JPanel login = new JPanel();
@@ -36,17 +37,17 @@ public class MainWindow extends JFrame {
         login.add(captcha);
 
         login.add(ok);
-        this.setContentPane(login);
+        frame.setContentPane(login);
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setBounds(200, 90, 350, 250);
-        this.setResizable(false);
-        this.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setBounds(200, 90, 350, 250);
+        frame.setResizable(false);
+        frame.setVisible(true);
 
         ok.addActionListener(arg0 -> {
             boolean access = authenticator.authenticate(captcha.getText(), name.getText(), pass.getText(), c1, c2);
             if (access) {
-                this.dispose();
+                frame.dispose();
                 GUI gui = new GUI();
                 gui.paint(name.getText());
             } else {
