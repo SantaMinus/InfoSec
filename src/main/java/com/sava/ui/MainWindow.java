@@ -29,9 +29,9 @@ public class MainWindow extends JFrame {
         login.add(name);
         login.add(new JLabel("Password:"));
         login.add(pass);
-        // TODO: fix randomizers
-        final int c1 = (randomizer.nextInt() * 10);
-        final int c2 = (randomizer.nextInt() * 10);
+
+        final int c1 = (randomizer.nextInt(50));
+        final int c2 = (randomizer.nextInt(50));
         login.add(new JLabel("Captcha:    " + c1 + "+" + c2));
         login.add(captcha);
 
