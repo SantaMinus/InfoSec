@@ -14,42 +14,34 @@ public class MainWindow {
     private JFrame frame = new JFrame();
 
     public void signIn() {
-        final JPanel login = new JPanel();
+        final JTextField usernameField = new JTextField(28);
+        usernameField.setToolTipText("Username");
 
-        final JTextField name = new JTextField(28);
-        final JPasswordField pass = new JPasswordField(28);
+        final JPasswordField passwordField = new JPasswordField(28);
+        passwordField.setToolTipText("Password");
+
         final JTextField captcha = new JTextField(28);
-
-        name.setToolTipText("Name");
-        pass.setToolTipText("Password");
         captcha.setToolTipText("Captcha");
 
-        JButton ok = new JButton("OK");
-
-        login.add(new JLabel("Name:"));
-        login.add(name);
-        login.add(new JLabel("Password:"));
-        login.add(pass);
+        final JPanel loginPanel = new JPanel();
+        loginPanel.add(new JLabel("Name:"));
+        loginPanel.add(usernameField);
+        loginPanel.add(new JLabel("Password:"));
+        loginPanel.add(passwordField);
 
         final int c1 = (randomizer.nextInt(50));
         final int c2 = (randomizer.nextInt(50));
-        login.add(new JLabel("Captcha:    " + c1 + "+" + c2));
-        login.add(captcha);
+        loginPanel.add(new JLabel("Captcha:    " + c1 + "+" + c2));
+        loginPanel.add(captcha);
 
-        login.add(ok);
-        frame.setContentPane(login);
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setBounds(200, 90, 350, 250);
-        frame.setResizable(false);
-        frame.setVisible(true);
-
-        ok.addActionListener(arg0 -> {
-            boolean access = authenticator.authenticate(captcha.getText(), name.getText(), pass.getText(), c1, c2);
-            if (access) {
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(arg0 -> {
+            boolean accessGranted = authenticator.authenticate(captcha.getText(), usernameField.getText(),
+                    passwordField.getPassword(), c1, c2);
+            if (accessGranted) {
                 frame.dispose();
                 GUI gui = new GUI();
-                gui.paint(name.getText());
+                gui.paint(usernameField.getText());
             } else {
                 JOptionPane.showMessageDialog(GUI.frame, "Authentication failed", "ERROR",
                         JOptionPane.ERROR_MESSAGE);
@@ -57,5 +49,12 @@ public class MainWindow {
                 System.exit(0);
             }
         });
+        loginPanel.add(okButton);
+
+        frame.setContentPane(loginPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setBounds(200, 90, 350, 250);
+        frame.setResizable(false);
+        frame.setVisible(true);
     }
 }
