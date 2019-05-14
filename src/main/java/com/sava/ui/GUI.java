@@ -1,6 +1,5 @@
 package com.sava.ui;
 
-import com.sava.application.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +31,7 @@ public class GUI {
     private static final String ROOT_DIR = "../root";
     private static final String FILE_NOT_FOUND_ERROR = "File not found";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GUI.class);
 
     public GUI() {
         // intentionally left blank
