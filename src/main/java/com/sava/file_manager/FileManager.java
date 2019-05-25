@@ -28,28 +28,12 @@ public class FileManager {
         LOGGER.debug("{} created a file {}", login, filename);
     }
 
+    // TODO: simply write the content into a file
     public void editFile(String filename, String login, JTextArea content) {
-        if (file == null) {
-            file = new File(ROOT_DIR + "/" + login + "/" + filename);
+        String fileContent = readFile(filename, login, content);
+        if (!StringUtils.isEmpty(fileContent)) {
+            content.setText(fileContent + content.getText());
         }
-
-        if (file.exists()) {
-            Scanner scanner = null;
-            try {
-                scanner = new Scanner(file);
-            } catch (FileNotFoundException e) {
-                LOGGER.error(FILE_NOT_FOUND_ERROR, e);
-            }
-            String s = null;
-            if (scanner.hasNext()) {
-                s = scanner.nextLine();
-            }
-            scanner.close();
-            if (!StringUtils.isEmpty(s)) {
-                content.setText(s + content.getText());
-            }
-        }
-        LOGGER.debug("{} changed {} file content", login, filename);
     }
 
     public void deleteFile(String filename, String login) {
@@ -75,5 +59,38 @@ public class FileManager {
             writer.close();
         }
         LOGGER.debug("{} deleted a file {}", login, filename);
+    }
+
+    public String readFile(String filename, String login, JTextArea content) {
+        if (file == null) {
+            file = new File(ROOT_DIR + "/" + login + "/" + filename);
+        }
+        StringBuilder s = new StringBuilder();
+        if (file.exists()) {
+            Scanner scanner = null;
+            try {
+                scanner = new Scanner(file);
+            } catch (FileNotFoundException e) {
+                LOGGER.error(FILE_NOT_FOUND_ERROR, e);
+            }
+            while (scanner.hasNext()) {
+                s.append(scanner.nextLine());
+                s.append("\n");
+            }
+            scanner.close();
+        }
+        content.setText(s.toString());
+        return s.toString();
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    /**
+     * For test purpose
+     */
+    public void setFile(File file) {
+        this.file = file;
     }
 }

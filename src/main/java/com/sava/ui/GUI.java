@@ -38,10 +38,12 @@ class GUI {
         //menuBar
         JMenu fmenu = new JMenu("File");
         JMenuItem createFile = new JMenuItem("Create file");
+        JMenuItem readFile = new JMenuItem("Read file");
         JMenuItem editFile = new JMenuItem("Edit");
         JMenuItem deleteFile = new JMenuItem("Delete");
         JMenuItem exit = new JMenuItem("Exit");
         fmenu.add(createFile);
+        fmenu.add(readFile);
         fmenu.add(editFile);
         fmenu.add(deleteFile);
         fmenu.add(exit);
@@ -58,6 +60,7 @@ class GUI {
         frame.setVisible(true);
 
         createFile.addActionListener(arg0 -> fileManager.createFile(fname.getText(), login));
+        readFile.addActionListener(arg0 -> fileManager.readFile(fname.getText(), login, content));
         editFile.addActionListener(arg0 -> fileManager.editFile(fname.getText(), login, content));
         deleteFile.addActionListener(arg0 -> fileManager.deleteFile(fname.getText(), login));
         confirmFileEdit.addActionListener(e -> fileManager.confirmEdit(fname.getText(), login, content));
