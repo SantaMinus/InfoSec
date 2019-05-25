@@ -49,9 +49,6 @@ class GUI {
         fmenu.add(exit);
         menuBar.add(fmenu);
 
-        JMenuItem confirmFileEdit = new JMenuItem("Confirm");
-        menuBar.add(confirmFileEdit);
-
         //adding components
         addComps(frame);
 
@@ -63,7 +60,6 @@ class GUI {
         readFile.addActionListener(arg0 -> fileManager.readFile(fname.getText(), login, content));
         editFile.addActionListener(arg0 -> fileManager.editFile(fname.getText(), login, content));
         deleteFile.addActionListener(arg0 -> fileManager.deleteFile(fname.getText(), login));
-        confirmFileEdit.addActionListener(e -> fileManager.confirmEdit(fname.getText(), login, content));
 
         exit.addActionListener(arg0 -> {
             LOGGER.debug("{} signed out", login);

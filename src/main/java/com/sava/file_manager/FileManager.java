@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class FileManager {
@@ -28,14 +30,6 @@ public class FileManager {
         LOGGER.debug("{} created a file {}", login, filename);
     }
 
-    // TODO: simply write the content into a file
-    public void editFile(String filename, String login, JTextArea content) {
-        String fileContent = readFile(filename, login, content);
-        if (!StringUtils.isEmpty(fileContent)) {
-            content.setText(fileContent + content.getText());
-        }
-    }
-
     public void deleteFile(String filename, String login) {
         if (file == null) {
             file = new File(ROOT_DIR + "/" + login + "/" + filename);
@@ -43,8 +37,7 @@ public class FileManager {
         if (file.exists()) file.delete();
     }
 
-    // TODO: add this action to edit, don't use separately
-    public void confirmEdit(String filename, String login, JTextArea content) {
+    public void editFile(String filename, String login, JTextArea content) {
         if (file.exists()) {
             PrintWriter writer = null;
             try {
@@ -52,9 +45,8 @@ public class FileManager {
             } catch (FileNotFoundException e1) {
                 LOGGER.error(FILE_NOT_FOUND_ERROR, e1);
             }
-
-            writer.print("");
-            writer.print(content.getText());
+            List inputStrings = Arrays.asList(content.getText().split("\n"));
+            inputStrings.forEach(writer::println);
 
             writer.close();
         }
