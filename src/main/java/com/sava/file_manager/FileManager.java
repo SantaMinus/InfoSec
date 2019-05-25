@@ -1,6 +1,6 @@
 package com.sava.file_manager;
 
-import org.codehaus.plexus.util.StringUtils;
+import com.sava.exception.FileManagerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,13 +37,16 @@ public class FileManager {
         if (file.exists()) file.delete();
     }
 
-    public void editFile(String filename, String login, JTextArea content) {
+    public void editFile(String filename, String login, JTextArea content) throws FileManagerException {
         if (file.exists()) {
             PrintWriter writer = null;
             try {
                 writer = new PrintWriter(file);
             } catch (FileNotFoundException e1) {
                 LOGGER.error(FILE_NOT_FOUND_ERROR, e1);
+            }
+            if (writer == null) {
+                throw new FileManagerException("Failed to create a file writer");
             }
             List inputStrings = Arrays.asList(content.getText().split("\n"));
             inputStrings.forEach(writer::println);
@@ -53,7 +56,7 @@ public class FileManager {
         LOGGER.debug("{} deleted a file {}", login, filename);
     }
 
-    public String readFile(String filename, String login, JTextArea content) {
+    public String readFile(String filename, String login, JTextArea content) throws FileManagerException {
         if (file == null) {
             file = new File(ROOT_DIR + "/" + login + "/" + filename);
         }
@@ -64,6 +67,9 @@ public class FileManager {
                 scanner = new Scanner(file);
             } catch (FileNotFoundException e) {
                 LOGGER.error(FILE_NOT_FOUND_ERROR, e);
+            }
+            if (scanner == null) {
+                throw new FileManagerException("Failed to create a file scanner");
             }
             while (scanner.hasNext()) {
                 s.append(scanner.nextLine());

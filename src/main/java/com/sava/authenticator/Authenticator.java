@@ -1,5 +1,6 @@
 package com.sava.authenticator;
 
+import com.sava.exception.AuthenticatorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +15,7 @@ public class Authenticator {
     private static final File FILE = new File("access.xml");
     private static final String FILE_NOT_FOUND_ERROR = "File not found";
 
-    public boolean authenticate(String captcha, String login, char[] password, int c1, int c2) {
+    public boolean authenticate(String captcha, String login, char[] password, int c1, int c2) throws AuthenticatorException {
         int capt = Integer.parseInt(captcha);
         String[] arr;
         boolean access = false;
@@ -24,6 +25,9 @@ public class Authenticator {
             scanner = new Scanner(FILE);
         } catch (FileNotFoundException e) {
             LOGGER.error(FILE_NOT_FOUND_ERROR, e);
+        }
+        if (scanner == null) {
+            throw new AuthenticatorException("Failed to create a file scanner");
         }
         String s;
 

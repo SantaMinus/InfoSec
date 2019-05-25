@@ -1,6 +1,7 @@
 package com.sava.ui;
 
 import com.sava.authenticator.Authenticator;
+import com.sava.exception.AuthenticatorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,8 +37,13 @@ public class MainWindow {
 
         JButton okButton = new JButton("OK");
         okButton.addActionListener(arg0 -> {
-            boolean accessGranted = authenticator.authenticate(captcha.getText(), usernameField.getText(),
-                    passwordField.getPassword(), c1, c2);
+            boolean accessGranted = false;
+            try {
+                accessGranted = authenticator.authenticate(captcha.getText(), usernameField.getText(),
+                        passwordField.getPassword(), c1, c2);
+            } catch (AuthenticatorException e) {
+                LOGGER.error("Failed to sign in", e);
+            }
             if (accessGranted) {
                 frame.dispose();
                 GUI gui = new GUI();

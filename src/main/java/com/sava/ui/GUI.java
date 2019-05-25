@@ -1,5 +1,6 @@
 package com.sava.ui;
 
+import com.sava.exception.FileManagerException;
 import com.sava.file_manager.FileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ import javax.swing.JTextArea;
 class GUI {
     private JMenuBar menuBar = new JMenuBar();
 
-    private static JTextArea fname = new JTextArea();
+    private static JTextArea filename = new JTextArea();
     private static JTextArea content = new JTextArea();
     private static final JLabel ENTER_FILE_NAME_LABEL = new JLabel("Enter your file name:");
     private static final JLabel FILE_CONTENT_LABEL = new JLabel("File content:");
@@ -56,10 +57,22 @@ class GUI {
         frame.pack();
         frame.setVisible(true);
 
-        createFile.addActionListener(arg0 -> fileManager.createFile(fname.getText(), login));
-        readFile.addActionListener(arg0 -> fileManager.readFile(fname.getText(), login, content));
-        editFile.addActionListener(arg0 -> fileManager.editFile(fname.getText(), login, content));
-        deleteFile.addActionListener(arg0 -> fileManager.deleteFile(fname.getText(), login));
+        createFile.addActionListener(arg0 -> fileManager.createFile(filename.getText(), login));
+        readFile.addActionListener(arg0 -> {
+            try {
+                fileManager.readFile(filename.getText(), login, content);
+            } catch (FileManagerException e) {
+                LOGGER.error("Failed to read file", e);
+            }
+        });
+        editFile.addActionListener(arg0 -> {
+            try {
+                fileManager.editFile(filename.getText(), login, content);
+            } catch (FileManagerException e) {
+                LOGGER.error("Failed to edit file", e);
+            }
+        });
+        deleteFile.addActionListener(arg0 -> fileManager.deleteFile(filename.getText(), login));
 
         exit.addActionListener(arg0 -> {
             LOGGER.debug("{} signed out", login);
@@ -75,7 +88,7 @@ class GUI {
         //Add buttons
         panel.add(menuBar);
         panel.add(ENTER_FILE_NAME_LABEL);
-        panel.add(fname);
+        panel.add(filename);
         panel.add(FILE_CONTENT_LABEL);
         panel.add(content);
 
