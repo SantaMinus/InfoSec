@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -22,20 +24,31 @@ public class FileManager {
 
     public void createFile(String filename, String login) {
         file = new File(StringUtils.join(Arrays.asList(ROOT_DIR, login, filename), "/"));
+        boolean fileCreated;
         try {
-            file.createNewFile();
+            fileCreated = file.createNewFile();
         } catch (IOException e) {
             LOGGER.error("Failed to create a new file {}", filename, e);
             return;
         }
-        LOGGER.debug("{} created a file {}", login, filename);
+        if (fileCreated) {
+            LOGGER.debug("{} created a file {}", login, filename);
+        } else {
+            LOGGER.debug("A file with such name already exists");
+        }
     }
 
-    public void deleteFile(String filename, String login) {
+    public void deleteFile(String filename, String login) throws FileManagerException {
         if (file == null) {
             file = new File(StringUtils.join(Arrays.asList(ROOT_DIR, login, filename), "/"));
         }
-        if (file.exists()) file.delete();
+        if (file.exists()) {
+            try {
+                Files.delete(Paths.get(file.getPath()));
+            } catch (IOException e) {
+                throw new FileManagerException(e);
+            }
+        }
     }
 
     public void editFile(String filename, String login, JTextArea content) throws FileManagerException {

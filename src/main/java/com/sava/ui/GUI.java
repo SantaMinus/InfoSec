@@ -58,7 +58,13 @@ class GUI {
                 LOGGER.error("Failed to edit file", e);
             }
         });
-        deleteFile.addActionListener(arg0 -> fileManager.deleteFile(filename.getText(), login));
+        deleteFile.addActionListener(arg0 -> {
+            try {
+                fileManager.deleteFile(filename.getText(), login);
+            } catch (FileManagerException e) {
+                LOGGER.error("Cannot delete a file", e);
+            }
+        });
 
         exit.addActionListener(arg0 -> {
             LOGGER.debug("{} signed out", login);
