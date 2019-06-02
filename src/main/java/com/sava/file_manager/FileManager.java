@@ -1,6 +1,7 @@
 package com.sava.file_manager;
 
 import com.sava.exception.FileManagerException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +21,7 @@ public class FileManager {
     private static final String FILE_NOT_FOUND_ERROR = "File not found";
 
     public void createFile(String filename, String login) {
-        file = new File(ROOT_DIR + "/" + login + "/" + filename);
+        file = new File(StringUtils.join(Arrays.asList(ROOT_DIR, login, filename), "/"));
         try {
             file.createNewFile();
         } catch (IOException e) {
@@ -32,7 +33,7 @@ public class FileManager {
 
     public void deleteFile(String filename, String login) {
         if (file == null) {
-            file = new File(ROOT_DIR + "/" + login + "/" + filename);
+            file = new File(StringUtils.join(Arrays.asList(ROOT_DIR, login, filename), "/"));
         }
         if (file.exists()) file.delete();
     }
@@ -58,7 +59,7 @@ public class FileManager {
 
     public String readFile(String filename, String login, JTextArea content) throws FileManagerException {
         if (file == null) {
-            file = new File(ROOT_DIR + "/" + login + "/" + filename);
+            file = new File(StringUtils.join(Arrays.asList(ROOT_DIR, login, filename), "/"));
         }
         StringBuilder s = new StringBuilder();
         if (file.exists()) {

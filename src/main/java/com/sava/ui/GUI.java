@@ -5,16 +5,10 @@ import com.sava.file_manager.FileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.Container;
-import java.awt.GridLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.*;
+import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 
 class GUI {
     private JMenuBar menuBar = new JMenuBar();
@@ -33,27 +27,19 @@ class GUI {
     }
 
     void paint(String login) {
-        //frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //menuBar
-        JMenu fmenu = new JMenu("File");
+        JMenu fileMenu = new JMenu("File");
         JMenuItem createFile = new JMenuItem("Create file");
         JMenuItem readFile = new JMenuItem("Read file");
         JMenuItem editFile = new JMenuItem("Edit");
         JMenuItem deleteFile = new JMenuItem("Delete");
         JMenuItem exit = new JMenuItem("Exit");
-        fmenu.add(createFile);
-        fmenu.add(readFile);
-        fmenu.add(editFile);
-        fmenu.add(deleteFile);
-        fmenu.add(exit);
-        menuBar.add(fmenu);
 
-        //adding components
+        addComponents(fileMenu, Arrays.asList(createFile, readFile, editFile, deleteFile, exit));
+        menuBar.add(fileMenu);
+
         addComps(frame);
-
-        //Display the window.
         frame.pack();
         frame.setVisible(true);
 
@@ -85,13 +71,12 @@ class GUI {
         panel.setLayout(new GridLayout(0, 1));
         JPanel controls = new JPanel();
         controls.setLayout(new GridLayout(2, 2));
-        //Add buttons
-        panel.add(menuBar);
-        panel.add(ENTER_FILE_NAME_LABEL);
-        panel.add(filename);
-        panel.add(FILE_CONTENT_LABEL);
-        panel.add(content);
 
+        addComponents(panel, Arrays.asList(menuBar, ENTER_FILE_NAME_LABEL, filename, FILE_CONTENT_LABEL, content));
         pane.add(panel);
+    }
+
+    private void addComponents(Container main, List<Component> components) {
+        components.forEach(main::add);
     }
 }
