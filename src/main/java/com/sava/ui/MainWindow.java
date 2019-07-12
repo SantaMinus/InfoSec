@@ -1,12 +1,19 @@
 package com.sava.ui;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import java.util.Random;
+
 import com.sava.authenticator.Authenticator;
 import com.sava.exception.AuthenticatorException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.util.Random;
 
 public class MainWindow {
     private static final Random randomizer = new Random();
