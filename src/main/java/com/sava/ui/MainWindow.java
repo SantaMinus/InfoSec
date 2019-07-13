@@ -1,18 +1,36 @@
 package com.sava.ui;
 
-import com.sava.authenticator.Authenticator;
-import com.sava.exception.AuthenticatorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import java.util.Random;
 
+import com.sava.authenticator.Authenticator;
+import com.sava.exception.AuthenticatorException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class MainWindow {
     private static final Random randomizer = new Random();
     private static final Logger LOGGER = LoggerFactory.getLogger(MainWindow.class);
-    private Authenticator authenticator = new Authenticator();
+
+    private Authenticator authenticator;
+    private GUI gui;
     private JFrame frame = new JFrame();
+
+    @Autowired
+    public MainWindow(Authenticator authenticator, GUI gui) {
+        this.authenticator = authenticator;
+        this.gui = gui;
+    }
 
     public void signIn() {
         final JTextField usernameField = new JTextField(28);
@@ -46,7 +64,6 @@ public class MainWindow {
             }
             if (accessGranted) {
                 frame.dispose();
-                GUI gui = new GUI();
                 gui.paint(usernameField.getText());
             } else {
                 JOptionPane.showMessageDialog(GUI.frame, "Authentication failed", "ERROR",

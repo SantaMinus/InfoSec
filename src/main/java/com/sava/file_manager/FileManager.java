@@ -1,11 +1,6 @@
 package com.sava.file_manager;
 
-import com.sava.exception.FileManagerException;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
+import javax.swing.JTextArea;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,6 +11,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import com.sava.exception.FileManagerException;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+@Component
 public class FileManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileManager.class);
     private File file;
