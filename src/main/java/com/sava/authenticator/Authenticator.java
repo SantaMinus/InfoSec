@@ -1,15 +1,18 @@
 package com.sava.authenticator;
 
-import com.sava.exception.AuthenticatorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import com.sava.exception.AuthenticatorException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+@Component
 public class Authenticator {
     private static final Logger LOGGER = LoggerFactory.getLogger(Authenticator.class);
     private static final File FILE = new File("access.xml");

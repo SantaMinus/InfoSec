@@ -18,7 +18,9 @@ import com.sava.file_manager.FileManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+@org.springframework.stereotype.Component
 class GUI {
     private JMenuBar menuBar = new JMenuBar();
 
@@ -27,12 +29,13 @@ class GUI {
     private static final JLabel ENTER_FILE_NAME_LABEL = new JLabel("Enter your file name:");
     private static final JLabel FILE_CONTENT_LABEL = new JLabel("File content:");
     static JFrame frame = new JFrame("def1");
-    private FileManager fileManager = new FileManager();
+    private FileManager fileManager;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GUI.class);
 
-    GUI() {
-        // intentionally left blank
+    @Autowired
+    GUI(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
     void paint(String login) {

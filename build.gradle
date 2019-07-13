@@ -7,11 +7,13 @@ buildscript {
 plugins {
     id 'java'
     id 'groovy'
+    id 'org.springframework.boot' version '2.1.6.RELEASE'
 }
 
 apply plugin: 'idea'
 apply plugin: 'groovy'
 apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
 
 sourceCompatibility = 1.8
 version = '0.0.1-SNAPSHOT'
@@ -25,6 +27,7 @@ dependencies {
     compile group: 'org.glassfish.jersey.core', name: 'jersey-common', version: '2.27'
     compile group: 'com.google.firebase', name: 'firebase-admin', version: '6.6.0'
     compile group: 'org.apache.maven.plugins', name: 'maven-jar-plugin', version: '3.1.1'
+    compile 'org.springframework:spring-context:5.1.8.RELEASE'
 
     //add Logback
     compile 'ch.qos.logback:logback-classic:1.2.3'
