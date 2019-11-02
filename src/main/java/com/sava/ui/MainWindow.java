@@ -1,6 +1,7 @@
 package com.sava.ui;
 
 import com.sava.authenticator.Authenticator;
+import com.sava.authenticator.DBAuthenticator;
 import com.sava.exception.AuthenticatorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,7 @@ import java.util.Random;
 public class MainWindow {
     private static final Random randomizer = new Random();
     private static final Logger LOGGER = LoggerFactory.getLogger(MainWindow.class);
-    private Authenticator authenticator = new Authenticator();
+    private Authenticator authenticator = new DBAuthenticator();
     private JFrame frame = new JFrame();
 
     public void signIn() {
