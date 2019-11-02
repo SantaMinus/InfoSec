@@ -3,12 +3,14 @@ package com.sava.authenticator;
 import com.sava.db.DatabaseConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+@Component("authenticator")
 public class DBAuthenticator implements Authenticator {
     private static final Logger LOGGER = LoggerFactory.getLogger(DBAuthenticator.class);
 

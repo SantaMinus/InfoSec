@@ -9,14 +9,14 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnection.class);
+    private static final String DB_URL = "jdbc:h2:file:/D:/Programs/H2/bin/infosec;AUTO_SERVER=TRUE";
+    private static final String USER = "sava";
+    private static final String PASSWORD = "12345";
 
     public Connection connect() {
-        String dbUrl = "jdbc:h2:file:/D:/Programs/H2/bin/infosec;AUTO_SERVER=TRUE";
-        String user = "sava";
-        String password = "12345";
         try {
             Class.forName("org.hsqldb.jdbc.JDBCDriver");
-            Connection con = DriverManager.getConnection(dbUrl, user, password);
+            Connection con = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             LOGGER.debug("Connection created successfully");
             return con;
         } catch (ClassNotFoundException e) {
