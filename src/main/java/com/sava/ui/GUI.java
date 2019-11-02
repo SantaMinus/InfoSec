@@ -1,15 +1,26 @@
 package com.sava.ui;
 
-import com.sava.exception.FileManagerException;
-import com.sava.file_manager.FileManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.GridLayout;
 import java.util.Arrays;
 import java.util.List;
 
+import com.sava.exception.FileManagerException;
+import com.sava.file_manager.FileManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@org.springframework.stereotype.Component
 class GUI {
     private JMenuBar menuBar = new JMenuBar();
 
@@ -18,12 +29,13 @@ class GUI {
     private static final JLabel ENTER_FILE_NAME_LABEL = new JLabel("Enter your file name:");
     private static final JLabel FILE_CONTENT_LABEL = new JLabel("File content:");
     static JFrame frame = new JFrame("def1");
-    private FileManager fileManager = new FileManager();
+    private FileManager fileManager;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GUI.class);
 
-    GUI() {
-        // intentionally left blank
+    @Autowired
+    GUI(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
     void paint(String login) {
@@ -39,7 +51,7 @@ class GUI {
         addComponents(fileMenu, Arrays.asList(createFile, readFile, editFile, deleteFile, exit));
         menuBar.add(fileMenu);
 
-        addComps(frame);
+        setupMainPanel(frame);
         frame.pack();
         frame.setVisible(true);
 
@@ -72,7 +84,7 @@ class GUI {
         });
     }
 
-    private void addComps(final Container pane) {
+    private void setupMainPanel(final Container pane) {
         final JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0, 1));
         JPanel controls = new JPanel();

@@ -2,7 +2,7 @@ package com.sava.file_manager
 
 import spock.lang.Specification
 
-import javax.swing.JTextArea
+import javax.swing.*
 
 class FileManagerTest extends Specification {
     def fileManager = new FileManager()
