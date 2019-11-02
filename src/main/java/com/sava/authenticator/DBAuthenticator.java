@@ -17,11 +17,14 @@ public class DBAuthenticator implements Authenticator {
         DatabaseConnection connection = new DatabaseConnection();
         Connection con = connection.connect();
 
-        try {
-            Statement stmt = con.createStatement();
+        try (Statement stmt = con.createStatement()) {
             ResultSet res = stmt.executeQuery("SELECT LOGIN, PASSWORD FROM USERS");
             if (res.next()) {
                 LOGGER.debug("login: {}, pass: {}", res.getString("LOGIN"), res.getString("PASSWORD"));
+                if (res.getString("LOGIN").equals(login)
+                        && res.getString("PASSWORD").equals(String.valueOf(password))) {
+                    return true;
+                }
             }
         } catch (SQLException e) {
             LOGGER.error("Failed to execute SQL query", e);
