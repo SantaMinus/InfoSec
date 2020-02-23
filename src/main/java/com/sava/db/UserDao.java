@@ -4,10 +4,12 @@ import com.sava.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
 
+@Component
 public class UserDao implements Dao<User> {
 
     private Session session;
@@ -27,6 +29,7 @@ public class UserDao implements Dao<User> {
         return session.get(User.class, id);
     }
 
+    @Override
     public User getByLogin(String login) {
         createSession();
         session.beginTransaction();

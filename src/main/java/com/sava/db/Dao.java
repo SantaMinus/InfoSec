@@ -10,4 +10,6 @@ public interface Dao<T> {
     T create(T newObj);
 
     T update();
+
+    T getByLogin(String login);
 }

@@ -1,6 +1,5 @@
 package com.sava.application;
 
-import com.sava.db.UserDao;
 import com.sava.entity.User;
 import com.sava.ui.MainWindow;
 import org.hibernate.SessionFactory;
@@ -16,15 +15,11 @@ public class Application {
         LOGGER.debug("App started");
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+
         SessionFactory factory = new Configuration()
                 .configure()
                 .addAnnotatedClass(User.class)
                 .buildSessionFactory();
-
-        UserDao userDao = new UserDao();
-        User newUser = new User("testUser", "pass");
-        User created = userDao.create(newUser);
-        User usr = userDao.getByLogin("testUser");
 
         MainWindow mainWindow = context.getBean("mainWindow", MainWindow.class);
         mainWindow.signIn();
