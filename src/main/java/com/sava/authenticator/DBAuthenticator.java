@@ -1,6 +1,6 @@
 package com.sava.authenticator;
 
-import com.sava.db.Dao;
+import com.sava.db.UserDao;
 import com.sava.entity.User;
 import com.sava.exception.AuthenticatorException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 
 @Component("authenticator")
 public class DBAuthenticator implements Authenticator {
-    private final Dao<User> userDao;
+    private final UserDao userDao;
 
     @Autowired
-    public DBAuthenticator(Dao<User> userDao) {
+    public DBAuthenticator(UserDao userDao) {
         this.userDao = userDao;
     }
 

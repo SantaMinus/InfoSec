@@ -1,12 +1,12 @@
 package com.sava.authenticator
 
-import com.sava.db.Dao
+import com.sava.db.UserDao
 import com.sava.entity.User
 import com.sava.exception.AuthenticatorException
 import spock.lang.Specification
 
 class DBAuthenticatorTest extends Specification {
-    def userDao = Mock(Dao)
+    def userDao = Mock(UserDao)
     def authenticator = new DBAuthenticator(userDao)
 
     def "authenticate() throws an AuthenticatorException when a user is not found"() {
