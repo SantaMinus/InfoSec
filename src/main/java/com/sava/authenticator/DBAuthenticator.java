@@ -1,36 +1,29 @@
 package com.sava.authenticator;
 
-import com.sava.db.DatabaseConnection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.sava.db.UserDao;
+import com.sava.entity.User;
+import com.sava.exception.AuthenticatorException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 @Component("authenticator")
 public class DBAuthenticator implements Authenticator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DBAuthenticator.class);
+    private final UserDao userDao;
+
+    @Autowired
+    public DBAuthenticator(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
-    public boolean authenticate(String captcha, String login, char[] password, int c1, int c2) {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection con = connection.connect();
+    public boolean authenticate(String captcha, String login, char[] password, int num1, int num2)
+            throws AuthenticatorException {
+        int capt = Integer.parseInt(captcha);
+        User user = userDao.getByLogin(login);
 
-        try (Statement stmt = con.createStatement()) {
-            ResultSet res = stmt.executeQuery("SELECT LOGIN, PASSWORD FROM USERS");
-            if (res.next()) {
-                LOGGER.debug("login: {}, pass: {}", res.getString("LOGIN"), res.getString("PASSWORD"));
-                if (res.getString("LOGIN").equals(login)
-                        && res.getString("PASSWORD").equals(String.valueOf(password))) {
-                    return true;
-                }
-            }
-        } catch (SQLException e) {
-            LOGGER.error("Failed to execute SQL query", e);
+        if (user == null) {
+            throw new AuthenticatorException(String.format("User %s is not found", login));
         }
-        return false;
+        return user.getPassword().equals(String.valueOf(password)) && capt == num1 + num2;
     }
 }
