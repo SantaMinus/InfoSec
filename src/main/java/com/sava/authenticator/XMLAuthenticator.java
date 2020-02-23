@@ -16,7 +16,7 @@ public class XMLAuthenticator implements Authenticator {
     private static final String FILE_NOT_FOUND_ERROR = "File not found";
 
     @Override
-    public boolean authenticate(String captcha, String login, char[] password, int c1, int c2) throws AuthenticatorException {
+    public boolean authenticate(String captcha, String login, char[] password, int num1, int num2) throws AuthenticatorException {
         int capt = Integer.parseInt(captcha);
         String[] arr;
         boolean access = false;
@@ -36,7 +36,7 @@ public class XMLAuthenticator implements Authenticator {
             s = scanner.nextLine();
             arr = s.split(" ");
 
-            if (login.equals(arr[0]) && Arrays.equals(password, arr[1].toCharArray()) && capt == c1 + c2) {
+            if (login.equals(arr[0]) && Arrays.equals(password, arr[1].toCharArray()) && capt == num1 + num2) {
                 File directory = new File("F:/root/" + login);
                 access = true;
                 if (!directory.exists())
