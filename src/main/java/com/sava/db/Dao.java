@@ -7,7 +7,7 @@ public interface Dao<T> {
 
     List<T> getAll();
 
-    T create();
+    T create(T newObj);
 
     T update();
 }

@@ -4,14 +4,11 @@ import com.sava.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
 
 public class UserDao implements Dao<User> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserDao.class);
 
     private Session session;
 
@@ -30,14 +27,27 @@ public class UserDao implements Dao<User> {
         return session.get(User.class, id);
     }
 
+    public User getByLogin(String login) {
+        createSession();
+        session.beginTransaction();
+        List<User> users = session.createQuery("from User u where u.login = :login")
+                .setParameter("login", login)
+                .getResultList();
+        return users.get(0);
+    }
+
     @Override
     public List<User> getAll() {
         return Collections.emptyList();
     }
 
     @Override
-    public User create() {
-        return null;
+    public User create(User newUser) {
+        createSession();
+        session.beginTransaction();
+        session.save(newUser);
+        session.getTransaction().commit();
+        return getById(newUser.getPk());
     }
 
     @Override

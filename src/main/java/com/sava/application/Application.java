@@ -3,7 +3,6 @@ package com.sava.application;
 import com.sava.db.UserDao;
 import com.sava.entity.User;
 import com.sava.ui.MainWindow;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
@@ -21,15 +20,11 @@ public class Application {
                 .configure()
                 .addAnnotatedClass(User.class)
                 .buildSessionFactory();
-        Session session = factory.getCurrentSession();
 
+        UserDao userDao = new UserDao();
         User newUser = new User("testUser", "pass");
-        session.beginTransaction();
-        session.save(newUser);
-        session.getTransaction().commit();
-
-        UserDao userDao = new UserDao() ;
-        User user = userDao.getById(1);
+        User created = userDao.create(newUser);
+        User usr = userDao.getByLogin("testUser");
 
         MainWindow mainWindow = context.getBean("mainWindow", MainWindow.class);
         mainWindow.signIn();
