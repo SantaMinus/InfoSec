@@ -54,7 +54,7 @@ public class FileManager {
         }
     }
 
-    public void editFile(String filename, String login, JTextArea content) throws FileManagerException {
+    public void editFile(String login, JTextArea content) throws FileManagerException {
         if (file.exists()) {
             PrintWriter writer = null;
             try {
@@ -69,8 +69,9 @@ public class FileManager {
             inputStrings.forEach(writer::println);
 
             writer.close();
+            LOGGER.debug("{} edited a file {}", login, file.getName());
         }
-        LOGGER.debug("{} deleted a file {}", login, filename);
+        LOGGER.error("File {} not found", file.getName());
     }
 
     public String readFile(String filename, String login, JTextArea content) throws FileManagerException {

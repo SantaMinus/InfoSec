@@ -65,7 +65,7 @@ class GUI {
         });
         editFile.addActionListener(arg0 -> {
             try {
-                fileManager.editFile(filename.getText(), login, content);
+                fileManager.editFile(login, content);
             } catch (FileManagerException e) {
                 LOGGER.error("Failed to edit file", e);
             }

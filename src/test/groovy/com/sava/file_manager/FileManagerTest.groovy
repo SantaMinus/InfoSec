@@ -6,7 +6,6 @@ import javax.swing.*
 
 class FileManagerTest extends Specification {
     def fileManager = new FileManager()
-    def filename = 'readFile.txt'
     def login = 'user'
 
     def "readFile() returns contents of a file"() {
@@ -17,7 +16,7 @@ class FileManagerTest extends Specification {
         fileManager.file = file
 
         when:
-        def res = fileManager.readFile(filename, login, context)
+        def res = fileManager.readFile('readFile.txt', login, context)
 
         then:
         res == 'sample text\nabc\n'
@@ -32,7 +31,7 @@ class FileManagerTest extends Specification {
         fileManager.file = file
 
         when:
-        fileManager.editFile(filename, login, context)
+        fileManager.editFile(login, context)
 
         then:
         file.getText() == 'updated\r\ntext\r\n'
