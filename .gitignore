@@ -1,10 +1,6 @@
 ### STS ###
 .apt_generated
-.classpath
-.factorypath
-.project
 .settings
-.springBeans
 .sts4-cache
 
 ### IntelliJ IDEA ###
@@ -100,11 +96,6 @@ local.properties
 
 # User-specific stuff:
 .idea/**
-
-## File-based project format:
-*.iml
-*.ipr
-*.iws
 
 ########
 ### Gradle
