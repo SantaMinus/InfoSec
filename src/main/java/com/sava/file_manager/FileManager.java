@@ -1,11 +1,10 @@
 package com.sava.file_manager;
 
 import com.sava.exception.FileManagerException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
+import javax.swing.JTextArea;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,11 +15,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+@Slf4j
 public class FileManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileManager.class);
-    private File file;
     private static final String ROOT_DIR = "F:/root";
     private static final String FILE_NOT_FOUND_ERROR = "File not found";
+    private File file;
 
     public void createFile(String filename, String login) {
         file = new File(StringUtils.join(Arrays.asList(ROOT_DIR, login, filename), "/"));
@@ -28,13 +27,13 @@ public class FileManager {
         try {
             fileCreated = file.createNewFile();
         } catch (IOException e) {
-            LOGGER.error("Failed to create a new file {}", filename, e);
+            log.error("Failed to create a new file {}", filename, e);
             return;
         }
         if (fileCreated) {
-            LOGGER.debug("{} created a file {}", login, filename);
+            log.debug("{} created a file {}", login, filename);
         } else {
-            LOGGER.debug("A file with such name already exists");
+            log.debug("A file with such name already exists");
         }
     }
 
@@ -57,7 +56,7 @@ public class FileManager {
             try {
                 writer = new PrintWriter(file);
             } catch (FileNotFoundException e1) {
-                LOGGER.error(FILE_NOT_FOUND_ERROR, e1);
+                log.error(FILE_NOT_FOUND_ERROR, e1);
             }
             if (writer == null) {
                 throw new FileManagerException("Failed to create a file writer");
@@ -67,7 +66,7 @@ public class FileManager {
 
             writer.close();
         }
-        LOGGER.debug("{} deleted a file {}", login, filename);
+        log.debug("{} deleted a file {}", login, filename);
     }
 
     public String readFile(String filename, String login, JTextArea content) throws FileManagerException {
@@ -80,7 +79,7 @@ public class FileManager {
             try {
                 scanner = new Scanner(file);
             } catch (FileNotFoundException e) {
-                LOGGER.error(FILE_NOT_FOUND_ERROR, e);
+                log.error(FILE_NOT_FOUND_ERROR, e);
             }
             if (scanner == null) {
                 throw new FileManagerException("Failed to create a file scanner");

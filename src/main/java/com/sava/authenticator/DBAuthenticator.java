@@ -1,17 +1,14 @@
 package com.sava.authenticator;
 
 import com.sava.db.DatabaseConnection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+//@Slf4j
 public class DBAuthenticator implements Authenticator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DBAuthenticator.class);
-
     @Override
     public boolean authenticate(String captcha, String login, char[] password, int c1, int c2) {
         DatabaseConnection connection = new DatabaseConnection();
@@ -20,14 +17,14 @@ public class DBAuthenticator implements Authenticator {
         try (Statement stmt = con.createStatement()) {
             ResultSet res = stmt.executeQuery("SELECT LOGIN, PASSWORD FROM USERS");
             if (res.next()) {
-                LOGGER.debug("login: {}, pass: {}", res.getString("LOGIN"), res.getString("PASSWORD"));
+//                log.debug("login: {}, pass: {}", res.getString("LOGIN"), res.getString("PASSWORD"));
                 if (res.getString("LOGIN").equals(login)
                         && res.getString("PASSWORD").equals(String.valueOf(password))) {
                     return true;
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("Failed to execute SQL query", e);
+//            log.error("Failed to execute SQL query", e);
         }
         return false;
     }

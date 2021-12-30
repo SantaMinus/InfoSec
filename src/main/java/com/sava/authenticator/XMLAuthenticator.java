@@ -1,8 +1,7 @@
 package com.sava.authenticator;
 
 import com.sava.exception.AuthenticatorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,8 +9,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
+@Slf4j
 public class XMLAuthenticator implements Authenticator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(XMLAuthenticator.class);
     private static final File FILE = new File("access.xml");
     private static final String FILE_NOT_FOUND_ERROR = "File not found";
 
@@ -25,7 +24,7 @@ public class XMLAuthenticator implements Authenticator {
         try {
             scanner = new Scanner(FILE);
         } catch (FileNotFoundException e) {
-            LOGGER.error(FILE_NOT_FOUND_ERROR, e);
+            log.error(FILE_NOT_FOUND_ERROR, e);
         }
         if (scanner == null) {
             throw new AuthenticatorException("Failed to create a file scanner");
@@ -44,9 +43,9 @@ public class XMLAuthenticator implements Authenticator {
                 try {
                     Runtime.getRuntime().exec("attrib +H " + "F:/root/" + login);
                 } catch (IOException e) {
-                    LOGGER.error("Failed to execute a command", e);
+                    log.error("Failed to execute a command", e);
                 }
-                LOGGER.debug("{} signed in", login);
+                log.debug("{} signed in", login);
             }
         }
         scanner.close();

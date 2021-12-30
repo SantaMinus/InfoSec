@@ -2,25 +2,30 @@ package com.sava.ui;
 
 import com.sava.exception.FileManagerException;
 import com.sava.file_manager.FileManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.GridLayout;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 class GUI {
-    private JMenuBar menuBar = new JMenuBar();
-
-    private static JTextArea filename = new JTextArea();
-    private static JTextArea content = new JTextArea();
     private static final JLabel ENTER_FILE_NAME_LABEL = new JLabel("Enter your file name:");
     private static final JLabel FILE_CONTENT_LABEL = new JLabel("File content:");
     static JFrame frame = new JFrame("def1");
+    private static JTextArea filename = new JTextArea();
+    private static JTextArea content = new JTextArea();
+    private JMenuBar menuBar = new JMenuBar();
     private FileManager fileManager = new FileManager();
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GUI.class);
 
     GUI() {
         // intentionally left blank
@@ -48,26 +53,26 @@ class GUI {
             try {
                 fileManager.readFile(filename.getText(), login, content);
             } catch (FileManagerException e) {
-                LOGGER.error("Failed to read file", e);
+                log.error("Failed to read file", e);
             }
         });
         editFile.addActionListener(arg0 -> {
             try {
                 fileManager.editFile(filename.getText(), login, content);
             } catch (FileManagerException e) {
-                LOGGER.error("Failed to edit file", e);
+                log.error("Failed to edit file", e);
             }
         });
         deleteFile.addActionListener(arg0 -> {
             try {
                 fileManager.deleteFile(filename.getText(), login);
             } catch (FileManagerException e) {
-                LOGGER.error("Cannot delete a file", e);
+                log.error("Cannot delete a file", e);
             }
         });
 
         exit.addActionListener(arg0 -> {
-            LOGGER.debug("{} signed out", login);
+            log.debug("{} signed out", login);
             System.exit(0);
         });
     }
