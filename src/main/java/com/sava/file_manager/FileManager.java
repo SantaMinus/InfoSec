@@ -1,8 +1,11 @@
 package com.sava.file_manager;
 
 import com.sava.exception.FileManagerException;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 import javax.swing.JTextArea;
 import java.io.File;
@@ -16,6 +19,9 @@ import java.util.List;
 import java.util.Scanner;
 
 @Slf4j
+@Getter
+@Setter
+@Component
 public class FileManager {
     private static final String ROOT_DIR = "F:/root";
     private static final String FILE_NOT_FOUND_ERROR = "File not found";
@@ -61,7 +67,7 @@ public class FileManager {
             if (writer == null) {
                 throw new FileManagerException("Failed to create a file writer");
             }
-            List inputStrings = Arrays.asList(content.getText().split("\n"));
+            List<String> inputStrings = Arrays.asList(content.getText().split("\n"));
             inputStrings.forEach(writer::println);
 
             writer.close();
@@ -92,16 +98,5 @@ public class FileManager {
         }
         content.setText(s.toString());
         return s.toString();
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    /**
-     * For test purpose
-     */
-    public void setFile(File file) {
-        this.file = file;
     }
 }

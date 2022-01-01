@@ -3,6 +3,8 @@ package com.sava.ui;
 import com.sava.authenticator.Authenticator;
 import com.sava.authenticator.DBAuthenticator;
 import com.sava.exception.AuthenticatorException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,7 +15,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import java.util.Random;
 
-//@Slf4j
+@Slf4j
+@Component
 public class MainWindow {
     private static final Random randomizer = new Random();
     private Authenticator authenticator = new DBAuthenticator();
@@ -47,7 +50,7 @@ public class MainWindow {
                 accessGranted = authenticator.authenticate(captcha.getText(), usernameField.getText(),
                         passwordField.getPassword(), c1, c2);
             } catch (AuthenticatorException e) {
-//                log.error("Failed to sign in", e);
+                log.error("Failed to sign in", e);
             }
             if (accessGranted) {
                 frame.dispose();
@@ -56,7 +59,7 @@ public class MainWindow {
             } else {
                 JOptionPane.showMessageDialog(GUI.frame, "Authentication failed", "ERROR",
                         JOptionPane.ERROR_MESSAGE);
-//                log.debug("An attempt of unauthorised access");
+                log.debug("An attempt of unauthorised access");
                 System.exit(0);
             }
         });
